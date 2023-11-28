@@ -1,0 +1,48 @@
+﻿@model HealthcareSystem.ViewModel.Doctors.AddDoctorVM
+@{
+	this.ViewData["Title"] = "Add new doctor";
+}
+<form method="post" class="col-md-6 offset-md-3" action="/Doctors/Add">
+	<h1>@this.ViewData["Title"]</h1>
+	<div asp-validation-summary="All" class="text-danger"></div>
+	<div class="form-group">
+		<label asp-for="FirstName"></label>
+		<input asp-for="FirstName" class="form-control" />
+		<span asp-validation-for="FirstName" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="LastName"></label>
+		<input asp-for="LastName" class="form-control" />
+		<span asp-validation-for="LastName" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Age"></label>
+		<input asp-for="Age" class="form-control" />
+		<span asp-validation-for="Age" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Gender"></label>
+		<select class="form-control" asp-for="Gender">
+			<option value=""></option>
+			<option value="Male">Male</option>
+			<option value="Female">Female</option>
+			<option value="Unknown">Unknown</option>
+		</select>
+		<span asp-validation-for="Gender" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="HospitalId"></label>
+		<select class="form-control" asp-for="HospitalId">
+			@foreach (var item in Model.Hospitals)
+			{
+				<option value="@item.Id">@item.Name</option>
+			}
+		</select>
+	</div>
+	<div class="form-group">
+		<label asp-for="Department"></label>
+		<input asp-for="Department" class="form-control" />
+		<span asp-validation-for="Department" class="text-danger"></span>
+	</div> <br />
+	<input type="submit" class="btn btn-primary" value="Submit" />
+</form>
