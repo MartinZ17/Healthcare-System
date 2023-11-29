@@ -1,10 +1,9 @@
-﻿@model List<HealthcareSystem.Models.Doctor>
+﻿@model HealthcareSystem.ViewModel.Patients.AddPatientVM
 
 <div class="container mt-5">
 	<div class="row">
 		<div class="col-md-12">
-			<h2>Doctor Listing</h2>
-			<a class="btn btn-primary" href="/Doctors/Add">Add new doctor</a>
+			<h2>Choose doctor for patient @Model.FirstName @Model.LastName with diagnosis: @Model.Illnes</h2>
 			<table class="table table-bordered mt-3">
 				<thead>
 					<tr>
@@ -16,7 +15,7 @@
 						<th>Hospital</th>
 					</tr>
 				</thead>
-				@foreach (var item in Model)
+				@foreach (var item in Model.Doctors)
 				{
 					<tbody>
 						<tr>
@@ -27,13 +26,11 @@
 							<td>@item.Department</td>
 							<td>@item.Hospital.Name</td>
 							<td>
-								<a class="btn btn-primary btn-sm" href="/Doctors/Edit?id=@item.Id">Edit</a>
-								<a class="btn btn-danger btn-sm" href="/Doctors/Delete?id=@item.Id">Delete</a>
+								<a class="btn btn-primary btn-sm" href="/Patients/Add3?doctorid=@item.Id">Choose</a>
 							</td>
 						</tr>
 					</tbody>
 				}
-
 			</table>
 		</div>
 	</div>

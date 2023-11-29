@@ -12,10 +12,6 @@ namespace HealthcareSystem.Models
 
 		public ICollection<Patient> Patients { get; set; }
 		public ICollection<Doctor> Doctors { get; set; }
-
-
 		
-		
-
 	}
 }
