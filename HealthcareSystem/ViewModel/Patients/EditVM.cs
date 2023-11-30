@@ -1,11 +1,10 @@
 ﻿using HealthcareSystem.Models;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace HealthcareSystem.ViewModel.Patients
 {
-	public class AddPatientVM
+	public class EditVM
 	{
 		public int Id { get; set; }
 
@@ -17,7 +16,7 @@ namespace HealthcareSystem.ViewModel.Patients
 		[DisplayName("Last name")]
 		public string LastName { get; set; }
 
-		
+		[Required]
 		[Range(0, 150)]
 		[DisplayName("Age")]
 		public int Age { get; set; }
@@ -36,7 +35,9 @@ namespace HealthcareSystem.ViewModel.Patients
 
 		public List<Hospital> Hospitals { get; set; } = new List<Hospital>();
 
-		public int DoctorId {  get; set; }
+		public int DoctorId { get; set; }
 		public List<Doctor> Doctors { get; set; } = new List<Doctor>();
+
+		public bool IsDiff { get; set; } //To check if user select new hospital
 	}
 }

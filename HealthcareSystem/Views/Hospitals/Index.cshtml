@@ -1,0 +1,36 @@
+﻿@model HealthcareSystem.ViewModel.Hospitals.IndexVM
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Patient Listing</h2>
+            <a class="btn btn-primary" href="/Hospitals/Add">Add new hospital</a>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Hospital Name</th>
+                        <th>Country</th>
+                        <th>Doctors Count</th>
+                        <th>Patient Count</th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.Hospitals)
+                {
+                    <tbody>
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Country</td>
+                            <td><a class="btn btn-primary" href="/Hospitals/DoctorList?id=@item.Id"> @item.Doctors.Count</a></td>
+                            <td><a class="btn btn-primary" href="/Hospitals/PatientList?id=@item.Id">@item.Patients.Count</a></td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" href="/Patients/Edit?id=@item.Id">Edit</a>
+                                <a class="btn btn-danger btn-sm" href="/Patients/Delete?id=@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

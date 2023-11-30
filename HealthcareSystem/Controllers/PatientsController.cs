@@ -32,6 +32,11 @@ namespace HealthcareSystem.Controllers
 		public IActionResult Add(AddPatientVM model)
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
+			if (!ModelState.IsValid)
+			{
+				model.Hospitals = context.Hospitals.ToList();
+				return View(model);
+			}
 			Patient patient = new Patient();
 			patient.FirstName = model.FirstName;
 			patient.LastName = model.LastName;
@@ -63,6 +68,8 @@ namespace HealthcareSystem.Controllers
 			return View(model);
 		}
 
+		// Third page with confirmation about the new patient
+
 		private static int SelectedDoctorId;
 		[HttpGet]
 		public IActionResult Add3(int doctorId)
@@ -73,8 +80,7 @@ namespace HealthcareSystem.Controllers
 			SelectedDoctorId = doctorId;
 			return View();
 		}
-
-		// Third page with confirmation about the new patient
+		
 		[HttpPost]
 		public IActionResult Add3()
 		{
@@ -87,6 +93,111 @@ namespace HealthcareSystem.Controllers
 
 			return RedirectToAction("Index", "Patients");
 		}
+
+		private static int OldHospitalId;
+		private static int NewHospitalId;
+		private static bool IsDiff; // If user select another hospital, in view Edit2 to hide "Stay with current doctor"
+		[HttpGet]
+		public IActionResult Edit(int id)
+		{
+			HealthCareDbContext context = new HealthCareDbContext();
+			Patient patient = context.Patients.Where(x => x.Id == id).FirstOrDefault();
+
+			if (patient == null)
+			{
+				return RedirectToAction("Index", "Patients");
+			}
+			EditVM model = new EditVM();
+			model.Id = patient.Id;
+			model.FirstName = patient.FirstName;
+			model.LastName = patient.LastName;
+			model.Age = patient.Age;
+			model.Gender = patient.Gender;
+			model.Illnes = patient.Illnes;
+			model.HospitalId = patient.HospitalId;
+			model.Hospitals = context.Hospitals.ToList();
+			model.DoctorId = patient.DoctorId;
+
+			OldHospitalId = patient.HospitalId;
+
+			return View(model);
+		}
+
+		private static int EditedPatient;
+		[HttpPost]
+		public IActionResult Edit(EditVM model)
+		{
+			HealthCareDbContext context = new HealthCareDbContext();
+			Patient patient = new Patient();
+			if (!ModelState.IsValid)
+			{
+				model.Hospitals = context.Hospitals.ToList();
+				return View(model);
+			}
+
+			patient.Id = model.Id;
+			patient.FirstName = model.FirstName;
+			patient.LastName = model.LastName;
+			patient.Age = model.Age;
+			patient.Gender = model.Gender;
+			patient.Illnes = model.Illnes;
+			patient.HospitalId = model.HospitalId;
+			patient.DoctorId = model.DoctorId;
+
+			
+			EditedPatient = model.Id;
+			NewHospitalId = model.HospitalId;
+
+			context.Patients.Update(patient);
+			context.SaveChanges();
+			return RedirectToAction("Edit2", "Patients");
+		}
+
+		public IActionResult Edit2()
+		{
+			HealthCareDbContext context = new HealthCareDbContext();
+			var lastPatient = context.Patients.Where(x => x.Id == EditedPatient).FirstOrDefault();
+			int hospitalId = lastPatient.HospitalId;
+
+			if(OldHospitalId != NewHospitalId)
+			{
+				IsDiff = true;
+				
+			} else { IsDiff = false; }
+
+			EditVM model = new EditVM();
+			model.Doctors = context.Doctors.Where(x => x.HospitalId == hospitalId).Include(d => d.Hospital).ToList();
+			model.FirstName = lastPatient.FirstName;
+			model.LastName = lastPatient.LastName;
+			model.Illnes = lastPatient.Illnes;
+			model.IsDiff = IsDiff;
+
+			return View(model);
+		}
+
+		[HttpGet]
+		public IActionResult Edit3(int doctorId)
+		{
+			HealthCareDbContext context = new HealthCareDbContext();
+
+			var doctor = context.Doctors.Where(x => x.Id == doctorId).FirstOrDefault();
+			SelectedDoctorId = doctorId;
+			return View();
+		}
+
+		[HttpPost]
+		public IActionResult Edit3()
+		{
+			HealthCareDbContext context = new HealthCareDbContext();
+
+			var lastPatient = context.Patients.Where(x => x.Id == EditedPatient).FirstOrDefault();
+			lastPatient.DoctorId = SelectedDoctorId;
+			context.Patients.Update(lastPatient);
+			context.SaveChanges();
+
+			return RedirectToAction("Index", "Patients");
+		}
+
 
 		public IActionResult Delete(int id)
 		{

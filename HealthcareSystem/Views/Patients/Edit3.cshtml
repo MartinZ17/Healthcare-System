@@ -1,0 +1,15 @@
+﻿@model HealthcareSystem.ViewModel.Patients.EditVM
+@{
+	this.ViewData["Title"] = "Edit patient";
+}
+
+<div>
+	<form method="post">
+		@Html.HiddenFor(m=>m.Id)
+		<div class="form-contol">
+			<h1>Confirm the changes</h1>
+			<input type="submit" class="btn btn-primary" value="Confirm" />
+		</div>
+	</form>
+
+</div>

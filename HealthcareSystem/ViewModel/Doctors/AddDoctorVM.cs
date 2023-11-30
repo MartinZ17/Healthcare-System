@@ -14,8 +14,7 @@ namespace HealthcareSystem.ViewModel.Doctors
 		[DisplayName("Last Name")]
         public string LastName { get; set; }
 
-		[Required]
-        [Range(0, 150)]
+		[Range(1, 150)]
 		[DisplayName("Age")]
         public int Age { get; set; }
 
