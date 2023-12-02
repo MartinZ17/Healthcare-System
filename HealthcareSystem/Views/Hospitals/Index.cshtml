@@ -23,6 +23,11 @@
                             <td><a class="btn btn-primary" href="/Hospitals/DoctorList?id=@item.Id">@((item.Doctors != null) ? item.Doctors.Count : 0)</a></td>
                             <td><a class="btn btn-primary" href="/Hospitals/PatientList?id=@item.Id">@((item.Patients != null) ? item.Patients.Count : 0)</a></td>
                             <td>
+                                <img src="~/images/@item.HospitalPicture"
+                                      height="50" width="50"
+                                     asp-append-version="true"/>
+                            </td>
+                            <td>
                                 <a class="btn btn-primary btn-sm" href="/Hospitals/Edit?id=@item.Id">Edit</a>
                                 <a class="btn btn-danger btn-sm" href="/Hospitals/Delete?id=@item.Id">Delete</a>
                             </td>

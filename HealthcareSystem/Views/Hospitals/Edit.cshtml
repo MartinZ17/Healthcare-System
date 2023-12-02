@@ -2,20 +2,31 @@
 @{
 	this.ViewData["Title"] = "Edit hospital";
 }
-<form method="post" class="col-md-6 offset-md-3">
+<form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data">
 	<h1>@this.ViewData["Title"]</h1>
 	@Html.HiddenFor(m=>m.Id)
+	@Html.HiddenFor(d=>d.HospitalPictureName)
 	<div asp-validation-summary="All" class="text-danger"></div>
 	<div class="form-group">
 		<label asp-for="Name"></label>
-		<input asp-for="Name" class="form-control" />
+		<input asp-for="Name" class="form-control" required />
 		<span asp-validation-for="Name" class="text-danger"></span>
 	</div>
 	<div class="form-group">
 		<label asp-for="Country"></label>
-		<input asp-for="Country" class="form-control" />
+		<input asp-for="Country" class="form-control" required />
 		<span asp-validation-for="Country" class="text-danger"></span>
 	</div>
-	 <br />
+	<br />
+	<div class="col-md-6">
+		<div class="form-group">
+			<img src="~/images/@Model.HospitalPictureName"
+			height="300" width="300"
+				 asp-append-version="true" />
+			<label class="form-label">Hospital picture</label>
+			<input asp-for="HospitalImage" class="form-control" >
+		</div>
+	</div>
+	<br />
 	<input type="submit" class="btn btn-primary" value="Save changes" />
 </form>

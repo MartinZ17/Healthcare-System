@@ -1,6 +1,7 @@
 ﻿using HealthcareSystem.Data;
 using HealthcareSystem.Models;
 using HealthcareSystem.ViewModel.Hospitals;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,13 @@ namespace HealthcareSystem.Controllers
 {
     public class HospitalsController : Controller
     {
-        public IActionResult Index()
+		private readonly IWebHostEnvironment webHostEnvironment;
+
+        public HospitalsController(IWebHostEnvironment hostEnvironment)
+        {
+            webHostEnvironment = hostEnvironment;
+        }
+		public IActionResult Index()
         {
             HealthCareDbContext context = new HealthCareDbContext();
             IndexVM model = new IndexVM();
@@ -56,10 +63,13 @@ namespace HealthcareSystem.Controllers
                 return View(model);
             }
 
+            string uniqueFileName = UploededFile(model);
+
             HealthCareDbContext context = new HealthCareDbContext();
             Hospital hospital = new Hospital();
             hospital.Name = model.Name;
             hospital.Country = model.Country;
+            hospital.HospitalPicture = uniqueFileName;
 
             context.Hospitals.Add(hospital);
             context.SaveChanges();
@@ -67,7 +77,45 @@ namespace HealthcareSystem.Controllers
             return RedirectToAction("Index", "Hospitals");
         }
 
-        [HttpGet]
+        // Method for Add Page
+		private string UploededFile(AddHospitalVM model)
+		{
+            string uniqueFileName = null;
+
+            if(model.HospitalImage != null)
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.HospitalImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.HospitalImage.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+		}
+
+        // This method is for Edit Page
+		private string UploededFile2(EditVM model)
+		{
+			string uniqueFileName = null;
+
+			if (model.HospitalImage != null)
+			{
+				string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+				uniqueFileName = Guid.NewGuid().ToString() + "_" + model.HospitalImage.FileName;
+				string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+				using (var fileStream = new FileStream(filePath, FileMode.Create))
+				{
+					model.HospitalImage.CopyTo(fileStream);
+				}
+			}
+			return uniqueFileName;
+		}
+
+        private static Hospital EditingHospital;
+
+		[HttpGet]
         public IActionResult Edit(int id)
         {
             HealthCareDbContext context = new HealthCareDbContext();
@@ -79,9 +127,14 @@ namespace HealthcareSystem.Controllers
                 return RedirectToAction("Index", "Hospitals");
 			}
 
+            var test = UploededFile2(model);
+
             model.Name = hospital.Name;
             model.Id = hospital.Id;
             model.Country = hospital.Country;
+			model.HospitalPictureName = hospital.HospitalPicture;
+
+            EditingHospital = hospital;
 
             return View(model);
         }
@@ -89,21 +142,40 @@ namespace HealthcareSystem.Controllers
         [HttpPost]
         public IActionResult Edit(EditVM model) 
         {
-			if (!ModelState.IsValid)
-			{
-				return View(model);
-			}
-
 			HealthCareDbContext context = new HealthCareDbContext();
+
+            if(model.Name == null && model.Country == null)
+            {
+                return View(model);
+            }
+
+			string uniqueFileName = UploededFile2(model);
+
+            if(uniqueFileName == null)
+            {
+                uniqueFileName = EditingHospital.HospitalPicture;
+            }
+
             Hospital hospital = new Hospital();
             hospital.Id = model.Id;
             hospital.Name = model.Name;
             hospital.Country = model.Country;
+            hospital.HospitalPicture = uniqueFileName;
 
             context.Hospitals.Update(hospital);
             context.SaveChanges();
 
             return RedirectToAction("Index", "Hospitals");
 		}
+
+        public IActionResult Delete(int id)
+        {
+			HealthCareDbContext context = new HealthCareDbContext();
+            Hospital hospital = new Hospital { Id = id };
+            context.Hospitals.Remove(hospital);
+            context.SaveChanges();
+
+            return RedirectToAction("Index", "Hospitals");
+        }
 	}
 }

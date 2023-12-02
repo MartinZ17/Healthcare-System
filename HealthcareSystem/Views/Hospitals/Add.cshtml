@@ -2,7 +2,7 @@
 @{
 	this.ViewData["Title"] = "Add new hospital";
 }
-<form method="post" class="col-md-6 offset-md-3" action="/Hospitals/Add">
+<form method="post" class="col-md-6 offset-md-3" enctype="multipart/form-data" action="/Hospitals/Add">
 	<h1>@this.ViewData["Title"]</h1>
 	<div asp-validation-summary="All" class="text-danger"></div>
 	<div class="form-group">
@@ -15,6 +15,14 @@
 		<input asp-for="Country" class="form-control" />
 		<span asp-validation-for="Country" class="text-danger"></span>
 	</div>
-	<br />
+	<div class="col-md-6">
+		<div class="form-group">
+			<label asp-for="HospitalImage" class="form-label"></label>
+			<input asp-for="HospitalImage" class="form-control">
+			<span asp-validation-for="HospitalImage" class="text-danger"></span>
+		</div>
+	</div>
+	<br/>
 	<input type="submit" class="btn btn-primary" value="Submit" />
 </form>
+

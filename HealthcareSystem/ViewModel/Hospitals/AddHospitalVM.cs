@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace HealthcareSystem.ViewModel.Hospitals
 {
@@ -14,6 +15,8 @@ namespace HealthcareSystem.ViewModel.Hospitals
         [Display(Name = "Country")]
         public string Country { get; set; }
 
-        public IFormFile ProfileImage { get; set; }
+        [Required(ErrorMessage = "Please choose image")]
+        [Display(Name = "Hospital Picture")]
+        public IFormFile? HospitalImage { get; set; }
     }
 }

@@ -13,5 +13,10 @@ namespace HealthcareSystem.ViewModel.Hospitals
         [Required]
         [Display(Name = "Country")]
         public string Country { get; set; }
-    }
+
+		public IFormFile HospitalImage { get; set; }
+
+        public string HospitalPictureName { get; set; }
+
+	}
 }
