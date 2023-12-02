@@ -3,7 +3,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-12">
-            <h2>Patient Listing</h2>
+            <h2>Hospitals</h2>
             <a class="btn btn-primary" href="/Hospitals/Add">Add new hospital</a>
             <table class="table table-bordered mt-3">
                 <thead>
@@ -20,11 +20,11 @@
                         <tr>
                             <td>@item.Name</td>
                             <td>@item.Country</td>
-                            <td><a class="btn btn-primary" href="/Hospitals/DoctorList?id=@item.Id"> @item.Doctors.Count</a></td>
-                            <td><a class="btn btn-primary" href="/Hospitals/PatientList?id=@item.Id">@item.Patients.Count</a></td>
+                            <td><a class="btn btn-primary" href="/Hospitals/DoctorList?id=@item.Id">@((item.Doctors != null) ? item.Doctors.Count : 0)</a></td>
+                            <td><a class="btn btn-primary" href="/Hospitals/PatientList?id=@item.Id">@((item.Patients != null) ? item.Patients.Count : 0)</a></td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="/Patients/Edit?id=@item.Id">Edit</a>
-                                <a class="btn btn-danger btn-sm" href="/Patients/Delete?id=@item.Id">Delete</a>
+                                <a class="btn btn-primary btn-sm" href="/Hospitals/Edit?id=@item.Id">Edit</a>
+                                <a class="btn btn-danger btn-sm" href="/Hospitals/Delete?id=@item.Id">Delete</a>
                             </td>
                         </tr>
                     </tbody>
@@ -34,3 +34,5 @@
         </div>
     </div>
 </div>
+
+                            

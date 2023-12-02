@@ -2,18 +2,16 @@
 
 namespace HealthcareSystem.ViewModel.Hospitals
 {
-    public class AddHospitalVM
+    public class EditVM
     {
         public int Id { get; set; }
 
         [Required]
-        [Display(Name= "Hospital name")]
+        [Display(Name = "Hospital name")]
         public string Name { get; set; }
 
         [Required]
         [Display(Name = "Country")]
         public string Country { get; set; }
-
-        public IFormFile ProfileImage { get; set; }
     }
 }
