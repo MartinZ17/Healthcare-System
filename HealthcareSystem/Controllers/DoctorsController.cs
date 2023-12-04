@@ -1,6 +1,7 @@
 ﻿using HealthcareSystem.Data;
 using HealthcareSystem.Models;
 using HealthcareSystem.ViewModel.Doctors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,8 @@ namespace HealthcareSystem.Controllers
 {
 	public class DoctorsController : Controller
 	{
-		public IActionResult Index()
+        [Authorize]
+        public IActionResult Index()
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
 
@@ -17,7 +19,8 @@ namespace HealthcareSystem.Controllers
             return View(doctors);
 		}
 
-		[HttpGet]
+        [Authorize]
+        [HttpGet]
 		public IActionResult Add()
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
@@ -51,7 +54,8 @@ namespace HealthcareSystem.Controllers
 			return RedirectToAction("Index", "Doctors");
 		}
 
-		[HttpGet]
+        [Authorize]
+        [HttpGet]
 		public IActionResult Edit(int id)
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
@@ -100,7 +104,8 @@ namespace HealthcareSystem.Controllers
 			return RedirectToAction("Index", "Doctors");
 		}
 
-		public IActionResult Delete(int id)
+        [Authorize]
+        public IActionResult Delete(int id)
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
 			Doctor doctor = new Doctor { Id = id };

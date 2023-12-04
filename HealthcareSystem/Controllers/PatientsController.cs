@@ -1,6 +1,7 @@
 ﻿using HealthcareSystem.Data;
 using HealthcareSystem.Models;
 using HealthcareSystem.ViewModel.Patients;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,8 @@ namespace HealthcareSystem.Controllers
 {
 	public class PatientsController : Controller
 	{
-		public IActionResult Index()
+        [Authorize]
+        public IActionResult Index()
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
 			IndexVM model = new IndexVM();
@@ -20,7 +22,8 @@ namespace HealthcareSystem.Controllers
             return View(model);
 		}
 
-		public IActionResult Add()
+        [Authorize]
+        public IActionResult Add()
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
 			AddPatientVM model = new AddPatientVM();
@@ -52,8 +55,9 @@ namespace HealthcareSystem.Controllers
 			return RedirectToAction("Add2", "Patients");
 		}
 
-		// Second page for add new patient
-		[HttpGet]
+        [Authorize]
+        // Second page for add new patient
+        [HttpGet]
 		public IActionResult Add2()
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
@@ -71,7 +75,8 @@ namespace HealthcareSystem.Controllers
 		// Third page with confirmation about the new patient
 
 		private static int SelectedDoctorId;
-		[HttpGet]
+        [Authorize]
+        [HttpGet]
 		public IActionResult Add3(int doctorId)
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
@@ -97,7 +102,9 @@ namespace HealthcareSystem.Controllers
 		private static int OldHospitalId;
 		private static int NewHospitalId;
 		private static bool IsDiff; // If user select another hospital, in view Edit2 to hide "Stay with current doctor"
-		[HttpGet]
+
+        [Authorize]
+        [HttpGet]
 		public IActionResult Edit(int id)
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
@@ -153,7 +160,8 @@ namespace HealthcareSystem.Controllers
 			return RedirectToAction("Edit2", "Patients");
 		}
 
-		public IActionResult Edit2()
+        [Authorize]
+        public IActionResult Edit2()
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
 			var lastPatient = context.Patients.Where(x => x.Id == EditedPatient).FirstOrDefault();
@@ -175,7 +183,8 @@ namespace HealthcareSystem.Controllers
 			return View(model);
 		}
 
-		[HttpGet]
+        [Authorize]
+        [HttpGet]
 		public IActionResult Edit3(int doctorId)
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
@@ -198,8 +207,8 @@ namespace HealthcareSystem.Controllers
 			return RedirectToAction("Index", "Patients");
 		}
 
-
-		public IActionResult Delete(int id)
+        [Authorize]
+        public IActionResult Delete(int id)
 		{
 			HealthCareDbContext context = new HealthCareDbContext();
 			Patient patient = new Patient{ Id = id};

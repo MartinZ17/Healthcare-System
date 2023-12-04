@@ -1,6 +1,7 @@
 ﻿using HealthcareSystem.Data;
 using HealthcareSystem.Models;
 using HealthcareSystem.ViewModel.Hospitals;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,8 @@ namespace HealthcareSystem.Controllers
         {
             webHostEnvironment = hostEnvironment;
         }
-		public IActionResult Index()
+        [Authorize]
+        public IActionResult Index()
         {
             HealthCareDbContext context = new HealthCareDbContext();
             IndexVM model = new IndexVM();
@@ -27,6 +29,7 @@ namespace HealthcareSystem.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult DoctorList(int id)
         {
@@ -37,6 +40,7 @@ namespace HealthcareSystem.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult PatientList(int id)
         {
@@ -48,7 +52,7 @@ namespace HealthcareSystem.Controllers
                 .ToList();
             return View(model);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult Add()
         {
@@ -98,7 +102,7 @@ namespace HealthcareSystem.Controllers
         // This method is for Edit Page
 		private string UploededFile2(EditVM model)
 		{
-			string uniqueFileName = null;
+			string? uniqueFileName = null;
 
 			if (model.HospitalImage != null)
 			{
@@ -113,9 +117,10 @@ namespace HealthcareSystem.Controllers
 			return uniqueFileName;
 		}
 
-        private static Hospital EditingHospital;
-
-		[HttpGet]
+        private static Hospital? EditingHospital;
+        
+        [Authorize]
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             HealthCareDbContext context = new HealthCareDbContext();
@@ -168,6 +173,7 @@ namespace HealthcareSystem.Controllers
             return RedirectToAction("Index", "Hospitals");
 		}
 
+        [Authorize]
         public IActionResult Delete(int id)
         {
 			HealthCareDbContext context = new HealthCareDbContext();
