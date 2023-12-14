@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthcareSystem.Controllers
 {
+	[Authorize]
 	public class PatientsController : Controller
 	{
         [Authorize]
