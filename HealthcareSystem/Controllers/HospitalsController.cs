@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthcareSystem.Controllers
 {
+    [Authorize]
     public class HospitalsController : Controller
     {
 		private readonly IWebHostEnvironment webHostEnvironment;
