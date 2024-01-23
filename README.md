@@ -5,4 +5,3 @@ In this Web Application you can Create/Edit/Delete Hospitals, Doctors and Patien
 
 
 
-Reminder: If you want to try the app, don't forget to fix the connection string to the Database
